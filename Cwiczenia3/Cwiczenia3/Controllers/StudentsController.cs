@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cwiczenia3.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cwiczenia3.Controllers
@@ -27,6 +28,22 @@ namespace Cwiczenia3.Controllers
         [HttpGet]
         public String GetStudent(String orderBy) {
             return $"Kowalski, Malewski, Andrzejewski sortowanie={orderBy}";
+        }
+
+        [HttpPost]
+        public IActionResult CreateStudent(Student student) {
+            student.IndexNumber = $"s{new Random().Next(1, 20_000)}";
+            return Ok(student);
+        }
+
+        [HttpPut("put/{id:int}")]
+        public IActionResult PutStudent(int id) {
+            return Ok("Aktualizacja ukończona");
+        }
+
+        [HttpDelete("delete/{id:int}")]
+        public IActionResult DeleteStudent(int id) {
+            return Ok("Usuwanie ukończone");
         }
     }
 }
