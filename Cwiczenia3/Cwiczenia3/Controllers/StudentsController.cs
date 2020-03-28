@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Cwiczenia3.DAL;
@@ -15,9 +16,6 @@ namespace Cwiczenia3.Controllers
         private readonly IDbService _dbService;
         public StudentsController(IDbService dbService) {
             _dbService = dbService;
-        }
-        public String GetStudent() {
-            return "Kowalski, Malewski, Andrzejewski";
         }
 
         [HttpGet("{id}")]
