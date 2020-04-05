@@ -1,4 +1,5 @@
-﻿using Cwiczenia3.Models;
+﻿using Cwiczenia3.DTOs.Requests;
+using Cwiczenia3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,9 @@ namespace Cwiczenia3.DAL {
             };*/
         }
 
-        public void EnrollStudent() {
-            throw new NotImplementedException();
+        public void EnrollStudent(EnrollStudentRequest request)
+        {
+            
         }
 
         public IEnumerable<Student> GetStudent() {
