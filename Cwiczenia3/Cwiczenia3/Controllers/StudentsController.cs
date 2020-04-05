@@ -100,12 +100,12 @@ namespace Cwiczenia3.Controllers
             return Ok(student);
         }
 
-        [HttpPut("put/{id:int}")]
+        [HttpPut("{id:int}")]
         public IActionResult PutStudent(int id) {
             return Ok("Aktualizacja ukończona");
         }
 
-        [HttpDelete("delete/{id:int}")]
+        [HttpDelete("{id:int}")]
         public IActionResult DeleteStudent(int id) {
             return Ok("Usuwanie ukończone");
         }
