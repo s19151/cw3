@@ -16,6 +16,11 @@ namespace Cwiczenia3.DAL {
                 new Student{ IdStudent = 3, FirstName = "Andrzej", LastName = "Andrzejewicz"}
             };*/
         }
+
+        public void EnrollStudent() {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Student> GetStudent() {
             return _students;
         }

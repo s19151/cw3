@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 namespace Cwiczenia3.DAL {
     public interface IDbService {
         public IEnumerable<Student> GetStudent();
+
+        public void EnrollStudent();
     }
 }
