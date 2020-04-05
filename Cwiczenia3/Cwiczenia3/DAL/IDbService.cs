@@ -1,4 +1,5 @@
-﻿using Cwiczenia3.Models;
+﻿using Cwiczenia3.DTOs.Requests;
+using Cwiczenia3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace Cwiczenia3.DAL {
     public interface IDbService {
         public IEnumerable<Student> GetStudent();
 
-        public void EnrollStudent();
+        public void EnrollStudent(EnrollStudentRequest request);
     }
 }

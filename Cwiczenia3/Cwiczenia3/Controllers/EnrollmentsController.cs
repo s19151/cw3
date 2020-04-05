@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cwiczenia3.DAL;
+using Cwiczenia3.DTOs.Requests;
 using Cwiczenia3.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +19,8 @@ namespace Cwiczenia3.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnrollStudent(Student st) {
-            
+        public IActionResult EnrollStudent(EnrollStudentRequest request) {
 
-            return BadRequest("nie wszystkie pola wypełnione");
         }
     }
 }
