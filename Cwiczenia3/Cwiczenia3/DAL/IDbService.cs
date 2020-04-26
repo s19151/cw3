@@ -1,14 +1,10 @@
-﻿using Cwiczenia3.DTOs.Requests;
-using Cwiczenia3.Models;
-using System;
+﻿using Cwiczenia3.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Cwiczenia3.DAL {
-    public interface IDbService {
+namespace Cwiczenia3.DAL
+{
+    public interface IDbService
+    {
         public IEnumerable<Student> GetStudent();
-
-        public void EnrollStudent(EnrollStudentRequest request);
     }
 }

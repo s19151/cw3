@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cwiczenia3.DTOs.Requests
 {
-    public class PromoteStudentRequest {
+    public class PromoteStudentsRequest {
         public String Studies { get; set; }
         public int Semester { get; set; }
     }
