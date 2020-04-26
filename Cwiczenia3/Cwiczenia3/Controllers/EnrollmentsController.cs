@@ -13,17 +13,20 @@ namespace Cwiczenia3.Controllers
     [ApiController]
     [Route("api/enrollments")]
     public class EnrollmentsController : ControllerBase {
-        private IDbService _dbService;
+        /*private IDbService _dbService;
 
         public EnrollmentsController(IDbService db) {
             _dbService = db;
-        }
+        }*/
 
         [HttpPost]
         public IActionResult EnrollStudent(EnrollStudentRequest request) {
-            /*_dbService.EnrollStudent(request);
-
-            return Ok();*/
+            if (request.BirthDate == null || request.FirstName == null ||
+                request.LastName == null || request.IndexNumber == null ||
+                request.Studies == null)
+            {
+                return BadRequest("Nie podano wszystkich wymaganych danych");
+            }
 
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19151;Integrated Security=True"))
             using (var com = con.CreateCommand()) {
@@ -35,27 +38,30 @@ namespace Cwiczenia3.Controllers
 
                 try
                 {
-                    com.CommandText = "select 1 from student where indexnumber = @index";
-                    com.Parameters.AddWithValue("index", request.IndexNumber);
-
-                    var dr = com.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        tran.Rollback();
-                        return BadRequest("Podano zły numer indeksu");
-                    }
-                    dr.Close();
-
                     com.CommandText = "select IdStudy from studies where name = @name";
                     com.Parameters.AddWithValue("name", request.Studies);
 
-                    dr = com.ExecuteReader();
+                    var dr = com.ExecuteReader();
                     if (!dr.Read())
                     {
+                        dr.Close();
                         tran.Rollback();
                         return BadRequest("Studia nie istnieją");
                     }
                     int idStudies = (int)dr["IdStudy"];
+                    dr.Close();
+
+
+                    com.CommandText = "select 1 from student where indexnumber = @index";
+                    com.Parameters.AddWithValue("index", request.IndexNumber);
+
+                    dr = com.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        dr.Close();
+                        tran.Rollback();
+                        return BadRequest("Podano zły numer indeksu");
+                    }
                     dr.Close();
 
                     com.CommandText = "select * from Enrollment where idstudy = @idstudy and semester = 1";
@@ -69,7 +75,10 @@ namespace Cwiczenia3.Controllers
                         en.IdStudy = dr["IdStudy"].ToString();
                         en.StartDate = dr["StartDate"].ToString();
                     }
-                    else {
+                    else
+                    {
+                        dr.Close();
+
                         com.CommandText = "Select Max(IdEnrollment) from enrollment";
                         dr = com.ExecuteReader();
 
@@ -78,7 +87,7 @@ namespace Cwiczenia3.Controllers
                         en.IdStudy = idStudies.ToString();
                         en.StartDate = DateTime.Now.Date.ToString();
 
-                        com.CommandText = "insert into enrollment values(@idenroll, @semester, @idtsudy, convert(date, @startdate))";
+                        com.CommandText = "insert into enrollment values(@idenroll, @semester, @idtsudy, convert(date, @startdate, 103))";
                         com.Parameters.AddWithValue("idenroll", en.IdEnrollment);
                         com.Parameters.AddWithValue("semester", en.Semester);
                         com.Parameters.AddWithValue("idtsudy", en.IdStudy);
@@ -88,8 +97,8 @@ namespace Cwiczenia3.Controllers
                     }
                     dr.Close();
 
-                    com.CommandText = "insert into student values(@index, @fname, @lname, @bdate, @idenroll)";
-                    com.Parameters.AddWithValue("index", request.IndexNumber);
+                    com.CommandText = "insert into student values(@ind, @fname, @lname, convert(date, @bdate, 103), @idenroll)";
+                    com.Parameters.AddWithValue("ind", request.IndexNumber);
                     com.Parameters.AddWithValue("fname", request.FirstName);
                     com.Parameters.AddWithValue("lname", request.LastName);
                     com.Parameters.AddWithValue("bdate", request.BirthDate);
@@ -98,11 +107,12 @@ namespace Cwiczenia3.Controllers
                     com.ExecuteNonQuery();
                     tran.Commit();
 
-                    return Ok(en);
+                    return Created("Student został zapisany", en);
                 }
                 catch (SqlException e) {
                     tran.Rollback();
-                    return BadRequest();
+
+                    return BadRequest(e.Message);
                 }
             }
         }
