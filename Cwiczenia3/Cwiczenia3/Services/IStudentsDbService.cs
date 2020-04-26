@@ -11,5 +11,8 @@ namespace Cwiczenia3.Services
     {
         public Enrollment EnrollStudent(EnrollStudentRequest request);
         public Enrollment PromoteStudents(PromoteStudentsRequest reuqest);
+        public Student GetStudent(String index);
+        public bool CheckIfStudentExists(String index);
+
     }
 }

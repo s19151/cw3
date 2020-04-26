@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cwiczenia3.DAL;
 using Cwiczenia3.Models;
+using Cwiczenia3.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cwiczenia3.Controllers
@@ -13,23 +14,25 @@ namespace Cwiczenia3.Controllers
     [Route("api/students")]
     public class StudentsController : ControllerBase
     {
-        /*private readonly IDbService _dbService;
-        public StudentsController(IDbService dbService) {
+        private readonly IStudentsDbService _dbService;
+        public StudentsController(IStudentsDbService dbService) {
             _dbService = dbService;
-        }*/
+        }
 
         [HttpGet("{id}")]
-        public IActionResult GetStudent(int id) {
-            if (id == 1)
-                return Ok("Kowalski");
-            else if (id == 2)
-                return Ok("Malewski");
-
-            return NotFound("Nie znaleziono studenta");
+        public IActionResult GetStudent(String index) {
+            try
+            {
+                return Ok(_dbService.GetStudent(index));
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpGet]
-        public IActionResult GetStudent(String orderBy) {
+        public IActionResult GetStudents(String orderBy) {
             var stList = new List<Student>();
 
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19151;Integrated Security=True"))
@@ -58,8 +61,6 @@ namespace Cwiczenia3.Controllers
                 return Ok(stList);
 
             return NotFound();
-
-            //return Ok(_dbService.GetStudent());
         }
 
         [HttpGet("enrollment/{id}")]

@@ -1,0 +1,27 @@
+DELETE
+/api/students/delete
+{
+	"idStudent": 1,
+	"firstname": "Jan",
+	"lastname": "Kowalski"
+}
+
+DELETE
+/api/students/delete
+{
+	"idStudent": 1,
+	"firstname": "Jan",
+	"lastname": "Kowalski"
+}
+
+POST
+/api/enrollments
+{
+	"IndexNumber": "s1234",
+	"FirstName": "Andrzej",
+	"LastName": "Malewski",
+	"BirthDate": "30.03.1993",
+	"Studies": "AAAAAA"
+}
+
+

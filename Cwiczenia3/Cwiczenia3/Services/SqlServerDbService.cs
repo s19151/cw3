@@ -13,6 +13,27 @@ namespace Cwiczenia3.Services
     {
         private String _dbConString = "Data Source=db-mssql;Initial Catalog=s19151;Integrated Security=True";
 
+        public bool CheckIfStudentExists(string index)
+        {
+            bool exists = false;
+
+            using (var con = new SqlConnection(_dbConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+
+                com.CommandText = "Select 1 from Student where IndexNumber = @index";
+                com.Parameters.AddWithValue("index", index);
+
+                var dr = com.ExecuteReader();
+                if (dr.Read())
+                    exists = true;
+            }
+
+            return exists;
+        }
+
         public Enrollment EnrollStudent(EnrollStudentRequest request)
         {
             using (var con = new SqlConnection(_dbConString))
@@ -23,6 +44,7 @@ namespace Cwiczenia3.Services
 
                 com.Transaction = tran;
                 com.Connection = con;
+
                 com.CommandText = "select IdStudy from studies where name = @name";
                 com.Parameters.AddWithValue("name", request.Studies);
 
@@ -97,6 +119,34 @@ namespace Cwiczenia3.Services
             }
         }
 
+        public Student GetStudent(string index)
+        {
+            Student st;
+
+            using (var con = new SqlConnection(_dbConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+
+                com.CommandText = "Select * from Student where IndexNumber = @index";
+                com.Parameters.AddWithValue("index", index);
+
+                var dr = com.ExecuteReader();
+                if (!dr.Read())
+                    throw new Exception("Podany student nie istnieje");
+
+                st = new Student();
+                st.IndexNumber = dr["IndexNumber"].ToString();
+                st.FirstName = dr["FirstName"].ToString();
+                st.LastName = dr["LastName"].ToString();
+                st.BirthDate = dr["BirthDate"].ToString();
+                st.IdEnrollment = dr["IdEnrollment"].ToString();
+            }
+
+            return st;
+        }
+
         public Enrollment PromoteStudents(PromoteStudentsRequest request)
         {
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19151;Integrated Security=True"))
@@ -155,5 +205,6 @@ namespace Cwiczenia3.Services
                 return en;
             }
         }
+
     }
 }
