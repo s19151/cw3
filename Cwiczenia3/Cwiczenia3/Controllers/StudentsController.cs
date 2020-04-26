@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Cwiczenia3.DAL;
+using Cwiczenia3.DTOs.Requests;
 using Cwiczenia3.Models;
 using Cwiczenia3.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Cwiczenia3.Controllers
 {
