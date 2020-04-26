@@ -64,6 +64,9 @@ namespace Cwiczenia3.Controllers
         [HttpPost]
         public IActionResult Login(LoginRequest request)
         {
+            if (!_dbService.CheckLogin(request))
+                return Unauthorized("Podano złe dane logowania");
+
             var claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, "1"),
                 new Claim(ClaimTypes.Name, "jan123"),

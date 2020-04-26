@@ -34,6 +34,28 @@ namespace Cwiczenia3.Services
             return exists;
         }
 
+        public bool CheckLogin(LoginRequest request)
+        {
+            bool authenticated = false;
+
+            using (var con = new SqlConnection(_dbConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+
+                com.CommandText = "Select 1 from Student where IndexNumber = @index and Password = @password";
+                com.Parameters.AddWithValue("index", request.Index);
+                com.Parameters.AddWithValue("password", request.Password);
+
+                var dr = com.ExecuteReader();
+                if (dr.Read())
+                    authenticated = true;
+            }
+
+            return authenticated;
+        }
+
         public Enrollment EnrollStudent(EnrollStudentRequest request)
         {
             using (var con = new SqlConnection(_dbConString))

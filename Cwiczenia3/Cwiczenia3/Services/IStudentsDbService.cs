@@ -13,6 +13,6 @@ namespace Cwiczenia3.Services
         public Enrollment PromoteStudents(PromoteStudentsRequest reuqest);
         public Student GetStudent(String index);
         public bool CheckIfStudentExists(String index);
-
+        public bool CheckLogin(LoginRequest request);
     }
 }
